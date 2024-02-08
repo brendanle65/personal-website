@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import CursorStateProvider from "@/contexts/CursorContext";
+import Header from "@/components/nav/Header";
+import Footer from "@/components/nav/Footer";
+import Cursor from "@/components/nav/Cursor";
 
 // These styles apply to every route in the application
 import "./globals.css";
@@ -22,9 +24,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <CursorStateProvider>
+          <Cursor />
+          {/* <SplashScreen></SplashScreen> if or else statement to help with rendering */}
+          <Header />
+          {children}
+          <Footer />
+          {/* <Curtain /> */}
+        </CursorStateProvider>
       </body>
     </html>
   );
