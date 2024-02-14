@@ -6,10 +6,10 @@ import { cursorStateContext, CursorState } from "@/contexts/CursorContext";
 /**
  * The withHover HOC wraps JSX elements that when hovered over change the cursor.
  */
-const withHover = (
+export default function withHover(
   Component: ComponentType<any>,
   hoverState = CursorState.HOVER
-) => {
+) {
   return (props) => {
     const { style, onMouseEnter, onMouseLeave, ...rest } = props;
     const { setCursorState } = useContext(cursorStateContext);
@@ -33,6 +33,4 @@ const withHover = (
       />
     );
   };
-};
-
-export default withHover;
+}

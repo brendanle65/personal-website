@@ -8,7 +8,7 @@ import { CursorState, cursorStateContext } from "@/contexts/CursorContext";
  * The Cursor component is a custom element that follows the mouse.
  * (it's a supplement, not a replacement to the browser's default cursor).
  */
-const Cursor: React.FC = () => {
+export default function Cursor() {
   const [cursorStyle, setCursorStyle] = useState({});
   const { cursorState: state } = useContext(cursorStateContext);
   const cursorX = useMotionValue(-100); // starts off-screen
@@ -52,21 +52,4 @@ const Cursor: React.FC = () => {
       />
     </motion.div>
   );
-};
-
-export default Cursor;
-
-// // this will be moved around screen, not the cursor itself
-// export const Container = styled(motion.div)`
-//    pointer-events: none;
-//    position: fixed;
-//    left: 0;
-//    top: 0;
-//    z-index: 9999 !important;
-// `;
-
-// export const Cursor = styled(motion.div)`
-//    background: ${(props) => props.theme.colors.yellow};
-//    transform: translate(-50%, -50%);
-//    border-radius: 100%;
-// `;
+}
