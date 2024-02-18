@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, animate } from "framer-motion";
 
 const LOADING_BAR_DURATION = 3.5; // how many seconds it takes to go from 0% to 100%
-const BIO = "Hello, I'm Brendan. <br/> I design and develop websites and <br/> apps that use artificial intelligence."; // prettier-ignore
-const SCRAMBLE_WINDOW = 16; // length of subtext to keep scrambled at any time
+const BIO = "Hello, I'm Brendan Le. <br/> I design and develop websites <br/> and  apps that use artificial intelligence."; // prettier-ignore
+const SCRAMBLE_WINDOW = 20; // length of subtext to keep scrambled at any time
 const SCRAMBLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz!@#$%^&*{}[]";
 const SCRAMBLE_EVERY_NTH_PROGRESS = 3; // only unscramble & reveal text every nth percent
 // prettier-ignore
@@ -25,7 +25,11 @@ interface ISplashScreenProps {
   onComplete: () => void;
 }
 
-// todo: is update styles, add breaks, add curtain animation, add exit animation
+const transition = {
+  duration: 0.75,
+  delay: 0.5,
+  ease: [0.22, 1.22, 0.95, 0.92],
+};
 
 /**
  * The SplashScreen component is the launching screen that the user sees when the page is first loaded.
@@ -44,9 +48,9 @@ export default function SplashScreen({ onComplete }: ISplashScreenProps) {
       onUpdate(value) {
         setProgress(Number(value.toFixed(0)));
       },
-      // onComplete() {
-      //   onComplete();
-      // },
+      onComplete() {
+        onComplete();
+      },
     });
     return () => controls.stop();
   }, []);
@@ -75,22 +79,38 @@ export default function SplashScreen({ onComplete }: ISplashScreenProps) {
       })();
 
       setBio({ unscrambled, scrambled });
+    } else if (progress === 100) {
+      // handle gap between SCRAMBLE_EVERY_NTH_PROGRESS frame and ending
+      setBio({ unscrambled: BIO, scrambled: "" });
     }
   }, [progress]);
 
   return (
     <div className="w-screen h-screen bg-blue flex flex-col px-16 overflow-hidden">
-      <p className="text-white absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 h-24 ml-4">
-        <span dangerouslySetInnerHTML={{ __html: bio.unscrambled }} />
-        <span className="text-yellow">{bio.scrambled}</span>
-      </p>
-      <motion.div style={{ x: progress + "%" }} className="mt-auto text-6xl mb-4 ml-20">
-        <div className="inline-block -translate-x-full">
-          <span className="text-white">{progress}</span>
-          <span className="text-yellow">%</span>
-        </div>
-      </motion.div>
-      <hr className="w-full border border-dashed border-yellow mb-16" />
+      <div className="text-white absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-80 h-24 ml-4 overflow-hidden">
+        <motion.p exit={{ y: "-100%" }} transition={transition}>
+          <span dangerouslySetInnerHTML={{ __html: bio.unscrambled }} />
+          <span className="text-yellow">{bio.scrambled}</span>
+        </motion.p>
+      </div>
+      <div className="mt-auto mb-4 overflow-hidden">
+        <motion.div
+          style={{ x: progress + "%" }}
+          exit={{ y: "-100%" }}
+          transition={transition}
+          className="text-6xl ml-24"
+        >
+          <div className="inline-block -translate-x-full">
+            <span className="text-white">{progress}</span>
+            <span className="text-yellow">%</span>
+          </div>
+        </motion.div>
+      </div>
+      <motion.hr
+        exit={{ width: 0 }}
+        transition={transition}
+        className="w-full border border-dashed border-yellow mb-16"
+      />
     </div>
   );
 }

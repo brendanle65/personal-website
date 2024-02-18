@@ -7,7 +7,7 @@ import { splashStateContext, SplashState } from "@/contexts/SplashContext";
 import Cursor from "./nav/Cursor";
 import Header from "./nav/Header";
 import Footer from "./nav/Footer";
-import Curtain from "./anime/Curtain";
+import BlockCurtain from "./anime/BlockCurtain";
 import SplashScreen from "./anime/SplashScreen";
 
 interface IAppProps {
@@ -25,19 +25,22 @@ export default function App({ children }: IAppProps) {
       <Cursor />
       <AnimatePresence mode="wait">
         {splashState === SplashState.SPLASH_IN_PROGRESS ? (
-          <SplashScreen onComplete={() => setSplashState(SplashState.SPLASH_COMPLETED)} />
+          <SplashScreen
+            key="splash"
+            onComplete={() => setSplashState(SplashState.SPLASH_COMPLETED)}
+          />
         ) : (
-          <>
+          <div key="main">
             <>
               <Header />
               {children}
               <Footer />
             </>
-            <Curtain
+            <BlockCurtain
               onLoad={() => setSplashState(SplashState.CURTAIN_IN_PROGRESS)}
               onComplete={() => setSplashState(SplashState.CURTAIN_COMPLETED)}
             />
-          </>
+          </div>
         )}
       </AnimatePresence>
     </>
