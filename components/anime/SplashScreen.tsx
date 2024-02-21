@@ -86,8 +86,8 @@ export default function SplashScreen({ onComplete }: ISplashScreenProps) {
   }, [progress]);
 
   return (
-    <div className="w-screen h-screen bg-blue flex flex-col px-16 overflow-hidden">
-      <div className="text-white absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-80 h-24 ml-4 overflow-hidden">
+    <div className="w-screen h-screen bg-blue flex flex-col px-4 sm:px-16 overflow-hidden">
+      <div className="text-white text-base absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-80 h-24 ml-4 overflow-hidden">
         <motion.p exit={{ y: "-100%" }} transition={transition}>
           <span dangerouslySetInnerHTML={{ __html: bio.unscrambled }} />
           <span className="text-yellow">{bio.scrambled}</span>
@@ -98,7 +98,7 @@ export default function SplashScreen({ onComplete }: ISplashScreenProps) {
           style={{ x: progress + "%" }}
           exit={{ y: "-100%" }}
           transition={transition}
-          className="text-6xl ml-24"
+          className="text-7xl font-medium ml-32"
         >
           <div className="inline-block -translate-x-full">
             <span className="text-white">{progress}</span>
